@@ -1,0 +1,115 @@
+version: v2
+description: nebula chinese idiom knowlege graph
+removeTempFiles: false
+clientSettings:
+  retry: 3
+  concurrency: 2 # number of graph clients
+  channelBufferSize: 1
+  space: chinese_idiom
+  connection:
+    user: root
+    password: nebula
+    address: graphd1:9669,graphd2:9669
+  postStart:
+    commands: |
+      DROP SPACE IF EXISTS chinese_idiom;
+      CREATE SPACE IF NOT EXISTS chinese_idiom(partition_num=5, replica_factor=1, vid_type=FIXED_STRING(24));
+      USE chinese_idiom;
+      CREATE TAG idiom(pinyin string);
+      CREATE TAG character();
+      CREATE TAG character_pinyin(tone int);
+      CREATE TAG pinyin_part(part_type string);
+      CREATE EDGE with_character(position int);
+      CREATE EDGE with_pinyin(position int);
+      CREATE EDGE with_pinyin_part(part_type string);
+    afterPeriod: 8s
+logPath: ./err/test.log
+files:
+
+  - path: ./idiom.csv
+    failDataPath: ./err/idiom.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: vertex
+      vertex:
+        tags:
+          - name: idiom
+
+  - path: ./character.csv
+    failDataPath: ./err/character.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: vertex
+      vertex:
+        tags:
+          - name: character
+
+  - path: ./character_pinyin.csv
+    failDataPath: ./err/character_pinyin.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: vertex
+      vertex:
+        tags:
+          - name: character_pinyin
+
+  - path: ./pinyin_part.csv
+    failDataPath: ./err/pinyin_part.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: vertex
+      vertex:
+        tags:
+          - name: pinyin_part
+
+  - path: ./with_pinyin.csv
+    failDataPath: ./err/with_pinyin.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: edge
+      edge:
+        name: with_pinyin
+
+  - path: ./with_character.csv
+    failDataPath: ./err/with_character.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: edge
+      edge:
+        name: with_character
+
+  - path: ./with_pinyin_part.csv
+    failDataPath: ./err/with_pinyin_part.csv
+    batchSize: 32
+    type: csv
+    csv:
+      withHeader: true
+      withLabel: false
+    schema:
+      type: edge
+      edge:
+        name: with_pinyin_part
