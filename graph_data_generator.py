@@ -55,7 +55,7 @@ class GraphDataGenerator:
         # Get idioms
         raw_idioms_URL = (
             "https://raw.githubusercontent.com/"
-            "antfu/handle/main/src/data/idioms.json")
+            "wey-gu/handle/main/src/data/idioms.json")
         raw_idioms = requests.get(raw_idioms_URL).json()
 
         # Generate vertices and edges
