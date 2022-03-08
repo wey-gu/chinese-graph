@@ -87,8 +87,8 @@ class GraphDataGenerator:
                     character_pinyin_[-1] if character_pinyin_[-1].isdigit()
                     else 0)  # 拼音音调
                 character_pinyin_parts = character_pinyin_[:-1]  # 拼音部分，无音调
-                pinyin_initial = to_initials(character_pinyin_)  # 拼音声母
-                pinyin_final = to_finals(character_pinyin_)  # 拼音韵母
+                pinyin_initial = to_initials(character_pinyin_, strict=False)  # 拼音声母
+                pinyin_final = to_finals(character_pinyin_, strict=False)  # 拼音韵母
 
                 # edge: with_pinyin
                 with_pinyin.append(
