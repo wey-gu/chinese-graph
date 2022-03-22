@@ -28,7 +28,7 @@ class GraphDataGenerator:
         """
         Generate graph data
         The idioms comes from:
-            https://github.com/antfu/handle/raw/main/src/data/idioms.json
+            https://github.com/wey-gu/handle/blob/b745924e89eae5d4cb03e404e657875ea9b622a3/src/data/idioms.json
         And vertices and edges will be in schema:
             - vertex tag:
                 - idiom
