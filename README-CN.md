@@ -2,25 +2,25 @@
 
 
 
-## Setup the Knowledge Graph
+## 搭建成语知识图谱
 
-### 1. Generate the data
+### 1. 收集、生成图谱数据
 
 ```bash
 $ python3 graph_data_generator.py
 ```
 
-### 2. Load data to Nebula Graph Database
+### 2. 导入数据到 Nebula Graph 图数据库
 
-#### 2.1 Deploy Nebula Graph
+#### 2.1 部署图数据库
 
-> With Nebula-Up https://github.com/wey-gu/nebula-up/ it's just an one-liner to run
+> 借助于 Nebula-Up https://github.com/wey-gu/nebula-up/ ，一行就可以了。
 
 ```bash
 $ curl -fsSL nebula-up.siwei.io/install.sh | bash -s -- v3.0.0
 ```
 
-You may see something like this:
+部署成功的话，会看到这样的结果：
 
 ```bash
 ┌────────────────────────────────────────┐
@@ -45,9 +45,9 @@ You may see something like this:
 └────────────────────────────────────────┘
 ```
 
-#### 2.2 Load data into Nebula Graph
+#### 2.2 图谱入库
 
-> With the help of Nebula-Importer https://github.com/vesoft-inc/nebula-importer/ in a Docker Image, it's also an one-liner call.
+> 借助于 Nebula-Importer https://github.com/vesoft-inc/nebula-importer/ ，一行就可以了。
 
 ```bash
 $ docker run --rm -ti \
@@ -58,20 +58,29 @@ $ docker run --rm -ti \
     --config /root/importer_conf.yaml
 ```
 
-It'll take around 1 or 2 minutes to finish
+大概一两分钟数据就导入成功了，命令也会正常退出。
 
-> Connect to Nebula Graph with Nebula Console
+> 连到图数据库的 console
 
-Enter console:
+获得本机第一个网卡的地址，这里是 `10.1.1.168`
 
 ```bash
-$ ~/.nebula-up/console.sh # this is to start a container with console binary
+$ ip address
 
-# then call console to connect your Nebula Graph
-$ nebula-console -addr graphd -port 9669 -user root -p nebula
+2: enp4s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 2a:32:4c:06:04:c4 brd ff:ff:ff:ff:ff:ff
+    inet 10.1.1.168/24 brd 10.1.1.255 scope global dynamic enp4s0
 ```
 
-Let's inspect some data in the graph!
+进入 Console 的容器执行下边的命令：
+
+```bash
+$ ~/.nebula-up/console.sh
+
+# nebula-console -addr 10.1.1.168 -port 9669 -user root -p nebula
+```
+
+检查一下导入的数据：
 
 ```sql
 (root@nebula) [(none)]> show spaces
@@ -86,7 +95,7 @@ Execution succeeded (time spent 1510/2329 us)
 
 Fri, 25 Feb 2022 08:53:11 UTC
 
-(root@nebula) [chinese_idiom]> match p=(:idiom) return p limit 2
+(root@nebula) [chinese_idiom]> match p=(成语:idiom) return p limit 2
 +------------------------------------------------------------------+
 | p                                                                |
 +------------------------------------------------------------------+
