@@ -125,3 +125,18 @@ Fri, 25 Feb 2022 08:53:11 UTC
 +---------+--------------------+--------+
 ```
 
+
+## 图建模的 Schema nGQL
+```sql
+CREATE SPACE IF NOT EXISTS chinese_idiom(partition_num=5, replica_factor=1, vid_type=FIXED_STRING(24));
+USE chinese_idiom;
+# 创建点的类型
+CREATE TAG idiom(pinyin string); #成语
+CREATE TAG character(); #汉字
+CREATE TAG character_pinyin(tone int); #单字的拼音
+CREATE TAG pinyin_part(part_type string); #拼音的声部
+# 创建边的类型
+CREATE EDGE with_character(position int); #包含汉字
+CREATE EDGE with_pinyin(position int); #读作
+CREATE EDGE with_pinyin_part(part_type string); #包含声部
+```
