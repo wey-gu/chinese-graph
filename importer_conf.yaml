@@ -22,6 +22,14 @@ clientSettings:
       CREATE EDGE with_character(position int);
       CREATE EDGE with_pinyin(position int);
       CREATE EDGE with_pinyin_part(part_type string);
+      CREATE TAG INDEX character_pinyin_index on character_pinyin(tone);
+      CREATE TAG INDEX pinyin_part_index on pinyin_part(part_type(8));
+      CREATE TAG INDEX character_index on character();
+      CREATE TAG INDEX idiom_index on idiom();
+      CREATE EDGE INDEX with_character_index on with_character(position);
+      CREATE EDGE INDEX with_pinyin_index on with_pinyin(position);
+      CREATE EDGE INDEX with_pinyin_part_index on with_pinyin_part(part_type(8));
+
     afterPeriod: 8s
 logPath: ./err/test.log
 files:
